@@ -55,5 +55,40 @@ function createGraph(entry) {
     return queue
 
 }
-const mainasset = createGraph('./example/entry.js')
-console.log(mainasset)
+
+function bundle(graph) {
+    let modules = ``
+    graph.forEach(mod => {
+        modules += `${mod.id}: [
+            function(require, module, exports) {
+                ${mod.code}
+            },
+            ${JSON.stringify(mod.mapping)}
+        ],`
+    })
+
+    const res = `(function(modules){
+        function require(id) {
+            const [fn, mapping] = modules[id]
+
+            const lr = function(relPath) {
+                return require(mapping[relPath])
+            }
+
+            const module = { exports: {}}
+
+            fn(lr, module, module.exports)
+
+            return module.exports
+        }
+
+        require(0)
+    })({
+         ${modules}
+    })`
+    return res
+}
+
+const graph = createGraph('./example/entry.js')
+const res = bundle(graph)
+console.log(res)
