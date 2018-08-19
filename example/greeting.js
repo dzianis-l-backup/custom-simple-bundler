@@ -1,1 +1,1 @@
-export default 'HALLO'
+export default 'Privet pisya nastya'
