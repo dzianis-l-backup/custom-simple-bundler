@@ -1,1 +1,1 @@
-export default 'Privet pisya nastya'
+export default 'Privet'
