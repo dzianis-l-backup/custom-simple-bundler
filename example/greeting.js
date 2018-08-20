@@ -1,1 +1,1 @@
-export default 'Privet'
+export default 'Privetiki'
